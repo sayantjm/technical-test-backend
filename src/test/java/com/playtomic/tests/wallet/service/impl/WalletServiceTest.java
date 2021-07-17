@@ -3,7 +3,6 @@ package com.playtomic.tests.wallet.service.impl;
 import com.playtomic.tests.wallet.domain.Wallet;
 import com.playtomic.tests.wallet.dto.WalletDto;
 import com.playtomic.tests.wallet.exception.AmountException;
-import com.playtomic.tests.wallet.exception.FoundException;
 import com.playtomic.tests.wallet.exception.NotFoundException;
 import com.playtomic.tests.wallet.mapper.DateMapper;
 import com.playtomic.tests.wallet.repository.WalletRepository;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.annotation.Order;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -35,7 +33,6 @@ class WalletServiceTest {
     private static final String AMOUNT_NULL = "Amount to charge is null.";
     private static final String NOT_ENOUGH_AMOUNT = "The wallet has not enough funds.";
     private static final String WALLET_NOT_FOUND = "Wallet NOT FOUND";
-    private static final String WALLET_FOUND = "Wallet already exists";
 
     @Autowired
     private WalletServiceImpl service;
@@ -90,7 +87,7 @@ class WalletServiceTest {
     }
 
     @Test
-    @DisplayName("Create a new Wallet with ID 2021")
+    @DisplayName("Create a new Wallet")
     void createWallet() {
         // Given an ID 2021
         Wallet walletCreated = new Wallet(WALLET_ID, 1L, CURRENT_TEST_TIME, null, BigDecimal.ZERO);
@@ -98,26 +95,12 @@ class WalletServiceTest {
         doReturn(walletCreated).when(repository).save(any());
 
         // When create action is requested
-        Optional<WalletDto> createdWallet = service.create(WALLET_ID);
+        Optional<WalletDto> createdWallet = service.create();
 
         // Then wallet 2021 has amount of 0
         assertNotNull(createdWallet, "Wallet was null");
         assertTrue(createdWallet.isPresent(), "Wallet was not found");
         assertEquals(BigDecimal.ZERO, createdWallet.get().getAmountEur(), "The wallet has NOT amount of 0");
-    }
-
-    @Test
-    @DisplayName("Create a new Wallet with an existing ID 2021 throws Found Exception")
-    void createExistingWallet() {
-        // Given an ID 2021
-        Wallet walletCreated = new Wallet(WALLET_ID, 1L, CURRENT_TEST_TIME, null, BigDecimal.ZERO);
-        doReturn(Optional.of(walletCreated)).when(repository).findById(WALLET_ID);
-
-        // When create action is requested
-        FoundException exception = assertThrows(FoundException.class, () -> service.create(WALLET_ID));
-
-        assertNotNull(exception);
-        assertTrue(exception.getMessage().contains(WALLET_FOUND));
     }
 
     @Test

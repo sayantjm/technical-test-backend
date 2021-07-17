@@ -1,6 +1,9 @@
 spring.profiles.active: develop
 server:
   port: 8090
+  url: http://localhost
+  error:
+    include-message: always
 ---
 spring:
   profiles: develop

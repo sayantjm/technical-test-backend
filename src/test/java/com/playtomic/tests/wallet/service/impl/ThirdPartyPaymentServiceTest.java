@@ -1,16 +1,20 @@
 package com.playtomic.tests.wallet.service.impl;
 
 
+import com.playtomic.tests.wallet.repository.WalletRepository;
 import com.playtomic.tests.wallet.service.PaymentServiceException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.math.BigDecimal;
 
 public class ThirdPartyPaymentServiceTest {
 
-    ThirdPartyPaymentService s = new ThirdPartyPaymentService();
+    @Mock
+    private WalletRepository mockedRepository;
+
+    ThirdPartyPaymentService s = new ThirdPartyPaymentService(mockedRepository);
 
     @Test
     public void test_exception() {

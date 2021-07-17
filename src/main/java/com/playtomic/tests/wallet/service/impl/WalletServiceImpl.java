@@ -3,7 +3,6 @@ package com.playtomic.tests.wallet.service.impl;
 import com.playtomic.tests.wallet.domain.Wallet;
 import com.playtomic.tests.wallet.dto.WalletDto;
 import com.playtomic.tests.wallet.exception.AmountException;
-import com.playtomic.tests.wallet.exception.FoundException;
 import com.playtomic.tests.wallet.exception.NotFoundException;
 import com.playtomic.tests.wallet.mapper.WalletMapper;
 import com.playtomic.tests.wallet.repository.WalletRepository;
@@ -13,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,7 +25,6 @@ public class WalletServiceImpl implements WalletService {
     private static final String AMOUNT_NULL = "Amount to charge is null.";
     private static final String NOT_ENOUGH_AMOUNT = "The wallet has not enough funds.";
     private static final String WALLET_NOT_FOUND = "Wallet NOT FOUND";
-    private static final String WALLET_FOUND = "Wallet already exists";
 
     private final WalletRepository repository;
     private final WalletMapper mapper;
@@ -42,15 +40,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Optional<WalletDto> create(Long walletId) {
-        Optional<Wallet> foundWalletOpt = repository.findById(walletId);
-        if (foundWalletOpt.isPresent()) {
-            throw new FoundException(WALLET_FOUND);
-        } else {
-            Wallet newWallet = new Wallet(walletId, 0L, LocalDateTime.now(), null, BigDecimal.ZERO);
-            Wallet savedWallet = repository.save(newWallet);
-            return Optional.of(mapper.walletToDto(savedWallet));
-        }
+    public Optional<WalletDto> create() {
+        Wallet savedWallet = repository.save(new Wallet(BigDecimal.ZERO));
+        return Optional.of(mapper.walletToDto(savedWallet));
     }
 
     @Override

@@ -1,5 +1,241 @@
 # Wallet Service
 
+## Environment
+* JDK 1.8
+* H2 Embeded database
+* PORT: 8090
+
+## API documentation (OpenApi)
+Added OpenApi documentation generation that is available into below url once you start
+the application:
+
+http://localhost:8090/swagger-ui.html
+
+## API documentation (manual)
+### Data Types
+Wallet
+```java
+{
+    "amountEur": 562.45,
+    "id": 1,
+    "version": 1,
+    "createdDate": "2021-07-17T13:03:20+0000",
+    "lastModifiedDate": "2021-07-17T13:04:08+0000"
+}
+-------------------------------------------------------
+```
+
+Amount
+```java
+{
+    "amount": 5.0,
+    "currency": "EUR"
+}
+
+-------------------------------------------------------
+```
+
+### Wallet API
+#### GET Wallet
+
+URL: **/wallets/{walletId}**
+
+Method: **GET**
+
+Accept: **application/json**
+
+Path param: **walletId** = wallet identifier. E.g: /wallets/1
+
+**Sample**
+```java
+Request:
+
+URL: http://SERVER:SERVER_PORT/wallets/1
+Method: GET
+Headers:
+    Accept: application/json
+-------------------------------------------------------
+Response:
+
+Status: 200 OK
+Headers:
+     Content-Type: application/json
+Body:
+{
+    "amountEur": 567.45,
+    "id": 1,
+    "version": 0,
+    "createdDate": "2021-07-17T13:03:20+0000",
+    "lastModifiedDate": "2021-07-17T13:03:20+0000"
+}
+     
+-------------------------------------------------------
+```
+
+#### Create Wallet
+URL: **/wallets**
+
+Method: **POST**
+
+Accept: **application/json**
+
+E.g: /wallets/1
+
+**Sample**
+```java
+Request:
+
+URL: http://SERVER:SERVER_PORT/wallets
+Method: POST
+Headers:
+    Accept: application/json
+-------------------------------------------------------
+Response:
+
+Status: 200 OK
+Headers:
+     Content-Type: application/json
+Body:
+{
+    "amountEur": 0,
+    "id": 5,
+    "version": 0,
+    "createdDate": "2021-07-17T11:56:55+0000",
+    "lastModifiedDate": "2021-07-17T11:56:55+0000"
+}
+     
+-------------------------------------------------------
+```
+#### Subtract amount from Wallet
+URL: **/wallets/{walletId}**
+
+Method: **PATCH**
+
+Accept: **application/json**
+
+Path param: **walletId** = wallet identifier. E.g: /wallets/1
+
+Body: **amount** to subtract. See Data Types section
+
+**Sample**
+```java
+Request:
+
+URL: http://SERVER:SERVER_PORT/wallets/1
+Method: PATCH
+Headers:
+    Accept: application/json
+Body:
+{
+    "amount": 5.0,
+    "currency": "EUR"
+}
+    
+-------------------------------------------------------
+Response:
+
+Status: 200 OK
+Headers:
+     Content-Type: application/json
+Body:
+{
+    "amountEur": 562.45,
+    "id": 1,
+    "version": 1,
+    "createdDate": "2021-07-17T13:03:20+0000",
+    "lastModifiedDate": "2021-07-17T13:04:08+0000"
+}
+     
+-------------------------------------------------------
+```
+
+#### Non-blocking Subtract amount from Wallet
+URL: **/wallets/nonblocking/{walletId}**
+
+Method: **PATCH**
+
+Accept: **application/json**
+
+Path param: **walletId** = wallet identifier. E.g: /wallets/nonblocking/1
+
+Body: **amount** to subtract. See Data Types section
+
+**Sample**
+```java
+Request:
+
+URL: http://SERVER:SERVER_PORT/wallets/1
+Method: PATCH
+Headers:
+    Accept: application/json
+Body:
+{
+    "amount": 5.0,
+    "currency": "EUR"
+}
+    
+-------------------------------------------------------
+Response:
+
+Status: 200 OK
+Headers:
+     Content-Type: application/json
+Body:
+{
+    "amountEur": 562.45,
+    "id": 1,
+    "version": 1,
+    "createdDate": "2021-07-17T13:03:20+0000",
+    "lastModifiedDate": "2021-07-17T13:04:08+0000"
+}
+     
+-------------------------------------------------------
+```
+
+#### recharge amount to Wallet
+URL: **/wallets/recharge/{walletId}**
+
+Method: **PATCH**
+
+Accept: **application/json**
+
+Path param: **walletId** = wallet identifier. E.g: /wallets/recharge/1
+
+Body: **amount** to subtract. See Data Types section
+
+**Sample**
+```java
+Request:
+
+URL: http://SERVER:SERVER_PORT/wallets/recharge/1
+Method: PATCH
+Headers:
+    Accept: application/json
+Body:
+{
+    "amount": 15.0,
+    "currency": "EUR"
+}
+    
+-------------------------------------------------------
+Response:
+
+Status: 200 OK
+Headers:
+     Content-Type: application/json
+Body:
+{
+    "amountEur": 562.45,
+    "id": 1,
+    "version": 1,
+    "createdDate": "2021-07-17T13:03:20+0000",
+    "lastModifiedDate": "2021-07-17T13:04:08+0000"
+}
+     
+-------------------------------------------------------
+```
+
+## Original requirements of the exercice
 This exercise consists of building a proof of concept of a wallet service.
 
 A wallet should work as a real purse:
@@ -52,5 +288,5 @@ Está pensado para que devuelva error bajo ciertas condiciones.
 
 Ten en cuenta que es un servicio que conviviría en un entorno de microservicios y alta concurrencia.
 
-Le puedes dedicar el tiempo que quieras, pero hemos estimado que 3-4 horas es suficiente para demostrar  [los requisitos del puesto.](OFERTA.md#requisitos)
+Le puedes dedicar el tiempo que quieras, pero hemos estimado que 3-4 horas es suficiente para demostrar  [los requisitos del puesto.]
  No hace falta que lo documentes pero puedes anotar todo lo que quieras como explicación o justificación de lo que hagas o dejes sin hacer.
