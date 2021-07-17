@@ -12,4 +12,7 @@ public interface WalletService {
     Optional<WalletDto> findById(Long id);
 
     Optional<WalletDto> makeCharge(Long walletId, BigDecimal bigDecimal);
+
+    Optional<WalletDto> create(Long walletId);
+
 }
