@@ -2,6 +2,7 @@ package com.playtomic.tests.wallet.service;
 
 import com.playtomic.tests.wallet.dto.WalletDto;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
@@ -9,4 +10,6 @@ import java.util.Optional;
  */
 public interface WalletService {
     Optional<WalletDto> findById(Long id);
+
+    Optional<WalletDto> makeCharge(Long walletId, BigDecimal bigDecimal);
 }
