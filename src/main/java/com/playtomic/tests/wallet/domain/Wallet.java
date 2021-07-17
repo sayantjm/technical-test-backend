@@ -18,12 +18,10 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "wallet")
 public class Wallet extends BaseEntity {
-
     public Wallet(Long id, Long version, LocalDateTime createdDate, LocalDateTime lastModifiedDate,
                   BigDecimal amountEur) {
         super(id, version, createdDate, lastModifiedDate);
         this.amountEur = amountEur;
-
     }
 
     private BigDecimal amountEur;
